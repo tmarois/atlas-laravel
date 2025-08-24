@@ -19,15 +19,23 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
  * }
  * ```
  */
+/**
+ * @template TModel of Model
+ * @psalm-consistent-constructor
+ */
 abstract class ModelService
 {
     /**
      * The model class managed by the service.
+     *
+     * @var class-string<TModel>
      */
     protected string $model;
 
     /**
      * Get a new query builder for the model.
+     *
+     * @return Builder<TModel>
      */
     public function query(): Builder
     {
@@ -36,6 +44,8 @@ abstract class ModelService
 
     /**
      * Build a base query for the model. Override to apply filters.
+     *
+     * @return Builder<TModel>
      */
     public function buildQuery(array $options = []): Builder
     {
@@ -44,6 +54,8 @@ abstract class ModelService
 
     /**
      * Retrieve all models.
+     *
+     * @return Collection<int, TModel>
      */
     public function list(array $columns = ['*'], array $options = []): Collection
     {
@@ -52,6 +64,8 @@ abstract class ModelService
 
     /**
      * Retrieve a paginated list of models.
+     *
+     * @return LengthAwarePaginator<TModel>
      */
     public function listPaginated(int $perPage = 15, array $options = []): LengthAwarePaginator
     {
@@ -66,6 +80,8 @@ abstract class ModelService
 
     /**
      * Find a model by primary key.
+     *
+     * @return TModel|null
      */
     public function find(int|string $id): ?Model
     {
@@ -74,6 +90,8 @@ abstract class ModelService
 
     /**
      * Create a new model instance.
+     *
+     * @return TModel
      */
     public function create(array $data): Model
     {
@@ -82,6 +100,9 @@ abstract class ModelService
 
     /**
      * Update the given model instance.
+     *
+     * @param TModel $model
+     * @return TModel
      */
     public function update(Model $model, array $data): Model
     {
@@ -92,6 +113,8 @@ abstract class ModelService
 
     /**
      * Delete the given model instance.
+     *
+     * @param TModel $model
      */
     public function delete(Model $model): bool
     {
