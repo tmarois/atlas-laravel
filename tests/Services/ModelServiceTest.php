@@ -40,11 +40,13 @@ class ModelServiceTest extends TestCase
         };
 
         $widget = $service->create(['name' => 'Alpha']);
+        $this->assertInstanceOf(Widget::class, $widget);
         $this->assertSame('Alpha', $widget->name);
         $this->assertCount(1, $service->list());
 
         $found = $service->find($widget->id);
-        $this->assertSame('Alpha', $found?->name);
+        $this->assertInstanceOf(Widget::class, $found);
+        $this->assertSame('Alpha', $found->name);
 
         $service->update($widget, ['name' => 'Beta']);
         $this->assertSame('Beta', $service->find($widget->id)?->name);
