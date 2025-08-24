@@ -6,7 +6,7 @@ coding conventions and expectations for contributors.
 
 ## Coding guidelines
 
-- Follow the architecture and rules in [docs/backend-guide.md](docs/backend-guide.md).
+- Follow the architecture and rules in the [docs](docs) directory.
 - Use PHP 8+ features with strict types and typed properties.
 - Follow PSR-12 formatting (enforced via Laravel Pint).
 - Keep controllers thin; business logic belongs in service classes.

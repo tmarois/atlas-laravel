@@ -22,11 +22,10 @@ Our Laravel package handles the backend foundation and Inertia bridge. It includ
 
 **Documentation**
 
-- [Backend Guide](docs/backend-guide.md)
-- [Inertia DataTable Options](docs/laravel/inertia-data-table-options.md)
-- [Enum Exporter](docs/laravel/enum-exporter.md)
-- [Model Service](docs/laravel/model-service.md)
-- [Support](docs/laravel/support.md)
+- [Inertia DataTable Options](docs/inertia-data-table-options.md)
+- [Enum Exporter](docs/enum-exporter.md)
+- [Model Service](docs/model-service.md)
+- [Support](docs/support.md)
 
 ## Contributing
 
