@@ -93,6 +93,8 @@ class ExportEnumsCommand extends Command
             }
         }
 
+        usort($exported, fn (array $a, array $b) => strcmp($a['path'], $b['path']));
+
         File::ensureDirectoryExists($outputPath);
         $indexFile = $outputPath.DIRECTORY_SEPARATOR.'index.'.$format;
         $index = $banner ? $banner."\n" : '';
