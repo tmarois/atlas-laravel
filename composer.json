@@ -1,5 +1,5 @@
 {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "name": "tmarois/atlas-laravel",
     "description": "Reusable Laravel package for Inertia.",
     "require": {
