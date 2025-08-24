@@ -29,4 +29,4 @@ Our Laravel package handles the backend foundation and Inertia bridge. It includ
 
 ## Contributing
 
-See [AGENTS.md](AGENTS.md) for repository conventions, testing instructions, and pull request guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing instructions, and pull request guidelines.
