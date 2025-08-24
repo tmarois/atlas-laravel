@@ -18,6 +18,8 @@ class PhoneNumber
 
         $phoneNumber = (string) $phoneNumber;
 
+        $phoneNumber = self::normalize($phoneNumber) ?? $phoneNumber;
+
         if (strlen($phoneNumber) !== 10) {
             return $phoneNumber;
         }

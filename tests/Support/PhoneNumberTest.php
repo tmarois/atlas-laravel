@@ -12,6 +12,11 @@ class PhoneNumberTest extends TestCase
         $this->assertSame('(123) 456-7890', PhoneNumber::format('1234567890'));
     }
 
+    public function test_format_normalizes_input_before_formatting(): void
+    {
+        $this->assertSame('(123) 456-7890', PhoneNumber::format('(123) 456-7890'));
+    }
+
     public function test_format_returns_null_for_empty_input(): void
     {
         $this->assertNull(PhoneNumber::format(null));
