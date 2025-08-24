@@ -2,28 +2,25 @@
 
 Export Laravel PHP enums to your Vue application so both back and front end share the same enum definitions.
 
-## Setup
+## Optional Configuration
 
-Publish the config and review the export paths and format:
+Publish the config if you need to customize export paths or format:
 
 ```bash
 php artisan vendor:publish --tag=atlas-config
 ```
 
-`config/atlas_enums.php` example:
+## Export enums to Vue
 
-```php
-return [
-    'enum_paths' => [
-        base_path('app/Enums'),
-    ],
-    'output_path' => resource_path('js/enums'),
-    'format' => 'ts', // or 'js'
-    'banner' => '// AUTO-GENERATED FILE. Do not edit by hand.',
-];
+Run the exporter to generate TypeScript or JavaScript enum files:
+
+```bash
+php artisan atlas:export-enums
 ```
 
-## Example
+## How it works
+
+The command scans the configured enum paths and writes matching files to `resources/js/enums` (overridable via config). Each PHP enum is converted into a corresponding TypeScript/JavaScript enum and re-exported through an index file for easy imports.
 
 Define a PHP enum:
 
@@ -37,13 +34,7 @@ enum UserStatus: string
 }
 ```
 
-Run the exporter:
-
-```bash
-php artisan atlas:export-enums
-```
-
-The command generates files in `resources/js/enums` (configurable). For TypeScript the result looks like:
+After running the exporter the following file is generated:
 
 `resources/js/enums/UserStatus.ts`
 
@@ -54,22 +45,16 @@ export enum UserStatus {
 }
 ```
 
-An `index.ts` file is created to re-export all enums:
-
-```ts
-export { UserStatus } from './UserStatus';
-```
-
-## Vue Usage
-
-Import the enums in your components:
+You can then compare data to enum values in Vue components:
 
 ```vue
 <script setup lang="ts">
 import { UserStatus } from '@/enums';
 
-const status = ref(UserStatus.ACTIVE);
+const user = ref({ status: 'active' });
+
+const isActive = computed(() => user.value.status === UserStatus.ACTIVE);
 </script>
 ```
 
-Now enum values stay in sync across Laravel and Vue with full IDE support.
+This keeps enum definitions synchronized across Laravel and Vue with full IDE support.
