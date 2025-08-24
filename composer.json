@@ -1,0 +1,33 @@
+{
+    "version": "1.0.0",
+    "name": "tmarois/atlas-laravel",
+    "description": "Reusable Laravel package for Inertia.",
+    "require": {
+        "php": "^8.3"
+    },
+    "require-dev": {
+        "laravel/framework": "^11.0",
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Atlas\\Laravel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Atlas\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Atlas\\Laravel\\AtlasServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
+}
