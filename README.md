@@ -4,6 +4,14 @@ Atlas is designed for apps built with [Laravel](https://laravel.com), [Vue](http
 
 Atlas focuses on eliminating the repeated setup that comes with every new project. It delivers guidelines and battle-tested building blocks so you can ship web-based applications faster, whether you're working on a full-blown admin system or a small dashboard.
 
+## Installation
+
+You can install the package via Composer:
+
+```bash
+composer require tmarois/atlas-laravel
+```
+
 ## About
 
 Our Laravel package handles the backend foundation and Inertia bridge. It includes tooling for:
