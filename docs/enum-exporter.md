@@ -22,6 +22,14 @@ php artisan atlas:export-enums
 
 The command scans the configured enum paths and writes matching files to `resources/js/enums` (overridable via config). Each PHP enum is converted into a corresponding TypeScript/JavaScript enum and re-exported through an index file for easy imports.
 
+If multiple enums share the same class name in different namespaces, the index file automatically aliases duplicates using their path segments to avoid export conflicts. Repeated segments that already appear in the class name are omitted to keep aliases concise:
+
+```ts
+// resources/js/enums/index.ts
+export { ActionStatus } from './Action/ActionStatus';
+export { ActionStatus as ActionWorkerStatus } from './Action/Worker/ActionStatus';
+```
+
 Define a PHP enum:
 
 ```php

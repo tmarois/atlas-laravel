@@ -8,6 +8,7 @@ use Orchestra\Testbench\TestCase;
 class ExportEnumsCommandTest extends TestCase
 {
     protected string $enumDir;
+
     protected string $outputDir;
 
     protected function getPackageProviders($app): array
@@ -81,5 +82,41 @@ PHP);
         ]);
         $this->assertSame($expectedIndex, $indexContent);
     }
-}
 
+    public function test_handles_duplicate_enum_names(): void
+    {
+        File::ensureDirectoryExists($this->enumDir.'/Action/Worker');
+
+        File::put($this->enumDir.'/Action/ActionStatus.php', <<<'PHP'
+<?php
+
+namespace App\Enums\Action;
+
+enum ActionStatus: string
+{
+    case Pending = 'pending';
+}
+PHP);
+
+        File::put($this->enumDir.'/Action/Worker/ActionStatus.php', <<<'PHP'
+<?php
+
+namespace App\Enums\Action\Worker;
+
+enum ActionStatus: string
+{
+    case Working = 'working';
+}
+PHP);
+
+        $this->artisan('atlas:export-enums')->assertExitCode(0);
+
+        $indexFile = $this->outputDir.'/index.ts';
+        $this->assertFileExists($indexFile);
+
+        $indexContent = File::get($indexFile);
+
+        $this->assertStringContainsString("export { ActionStatus } from './Action/ActionStatus';", $indexContent);
+        $this->assertStringContainsString("export { ActionStatus as ActionWorkerStatus } from './Action/Worker/ActionStatus';", $indexContent);
+    }
+}

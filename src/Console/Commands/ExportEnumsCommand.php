@@ -93,13 +93,47 @@ class ExportEnumsCommand extends Command
             }
         }
 
+        $nameCounts = [];
+        foreach ($exported as $enum) {
+            $nameCounts[$enum['name']] = ($nameCounts[$enum['name']] ?? 0) + 1;
+        }
+
+        foreach ($exported as &$enum) {
+            if (($nameCounts[$enum['name']] ?? 0) > 1) {
+                $segments = explode('/', $enum['path']);
+                $name = array_pop($segments);
+                $suffix = $name;
+                $aliasSegments = [];
+
+                foreach ($segments as $segment) {
+                    $clean = preg_replace('/[^A-Za-z0-9]/', '', $segment);
+                    if (str_starts_with($suffix, $clean)) {
+                        $suffix = substr($suffix, strlen($clean));
+                    }
+                    $aliasSegments[] = $clean;
+                }
+
+                $alias = implode('', $aliasSegments).$suffix;
+
+                if ($alias !== $enum['name']) {
+                    $enum['alias'] = $alias;
+                }
+            }
+        }
+        unset($enum);
+
         usort($exported, fn (array $a, array $b) => strcmp($a['path'], $b['path']));
 
         File::ensureDirectoryExists($outputPath);
         $indexFile = $outputPath.DIRECTORY_SEPARATOR.'index.'.$format;
         $index = $banner ? $banner."\n" : '';
         foreach ($exported as $enum) {
-            $index .= "export { {$enum['name']} } from './{$enum['path']}';\n";
+            $alias = $enum['alias'] ?? $enum['name'];
+            if ($alias === $enum['name']) {
+                $index .= "export { {$enum['name']} } from './{$enum['path']}';\n";
+            } else {
+                $index .= "export { {$enum['name']} as {$alias} } from './{$enum['path']}';\n";
+            }
         }
         File::put($indexFile, $index);
 
@@ -118,4 +152,3 @@ class ExportEnumsCommand extends Command
         return null;
     }
 }
-
