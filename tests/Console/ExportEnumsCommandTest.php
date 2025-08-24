@@ -71,8 +71,15 @@ PHP);
 
         $this->assertStringContainsString('export enum Status', File::get($statusFile));
         $this->assertStringContainsString('export enum InvoiceStatus', File::get($invoiceFile));
-        $this->assertStringContainsString("export { Status } from './Status';", File::get($indexFile));
-        $this->assertStringContainsString("export { InvoiceStatus } from './Billing/InvoiceStatus';", File::get($indexFile));
+
+        $indexContent = File::get($indexFile);
+        $expectedIndex = implode(PHP_EOL, [
+            '// test',
+            "export { InvoiceStatus } from './Billing/InvoiceStatus';",
+            "export { Status } from './Status';",
+            '',
+        ]);
+        $this->assertSame($expectedIndex, $indexContent);
     }
 }
 
