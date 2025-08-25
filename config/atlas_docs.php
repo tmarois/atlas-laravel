@@ -23,5 +23,15 @@ return [
             ],
             'ignore' => [],
         ],
+        [
+            'repo' => 'tmarois/atlas-ui',
+            'paths' => [
+                [
+                    'path' => 'docs',
+                    'output' => 'docs/atlas-ui',
+                ],
+            ],
+            'ignore' => [],
+        ],
     ],
 ];
