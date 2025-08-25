@@ -1,9 +1,8 @@
 # Laravel Guide
 
-This guide combines the architecture and coding conventions for the Laravel backend. All contributors must follow these practices.
+This guide combines the architecture and coding conventions for the Laravel projects. All contributors must follow these practices.
 
 ## Architecture
-
 
 This document defines the structure, boundaries, and design rules for this application. It exists to ensure the codebase remains modular, scalable, testable, and maintainable as it evolves. All developers are expected to understand and follow this architecture without exception.
 
@@ -109,7 +108,6 @@ The success of this architecture depends on discipline. Controllers must not con
 Every developer on the team is responsible for keeping these boundaries intact. This is not a guideline — it is the architecture.
 
 ## Conventions
-
 
 This document defines the naming, structure, and formatting conventions that all developers must follow. These standards exist to ensure the codebase is readable, predictable, and easy to navigate across the entire team.
 
