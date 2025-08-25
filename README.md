@@ -16,16 +16,10 @@ composer require tmarois/atlas-laravel
 
 Atlas handles the backend foundation and Inertia bridge. It includes tooling for:
 
-- **DataTables** – build server-driven options for dynamic tables.
-- **Enums** – export PHP enums for type-safe usage in Vue.
-- **Model Service** – base model service providing CRUD scaffolding.
-
-**Documentation**
-
-- [Inertia DataTable Options](docs/inertia-data-table-options.md)
-- [Enum Exporter](docs/enum-exporter.md)
-- [Model Service](docs/model-service.md)
-- [Support](docs/support.md)
+- [**DataTables**](docs/inertia-data-table-options.md) – build server-driven options for dynamic tables.
+- [**Enums**](docs/enum-exporter.md) – export PHP enums for type-safe usage in Vue.
+- [**Model Service**](docs/model-service.md) – base model service providing CRUD scaffolding.
+- [**Support Helpers**](docs/support.md) – lightweight utility classes.
 
 ## Contributing
 
