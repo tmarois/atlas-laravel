@@ -4,8 +4,6 @@ Atlas Laravel is a backend toolkit for [Inertia.js](https://inertiajs.com) appli
 
 The package addresses common needs such as server-driven tables, exporting enums for frontend use, and scaffolding CRUD operations through a model service layer.
 
----
-
 ## Installation
 
 You can install the package via Composer:
@@ -13,8 +11,6 @@ You can install the package via Composer:
 ```bash
 composer require tmarois/atlas-laravel
 ```
-
----
 
 ## Features
 
@@ -25,19 +21,13 @@ Atlas Laravel handles the backend foundation and Inertia bridge. It includes too
 - [**Model Service**](docs/model-service.md) – base model service providing CRUD scaffolding.
 - [**Support Helpers**](docs/support.md) – lightweight utility classes.
 
----
-
 ## Atlas UI
 
 [Atlas UI](https://github.com/tmarois/atlas-ui) – reusable utilities and PrimeVue components that are complementary to this setup.
 
----
-
 ## Laravel Template
 
 [Laravel Template](https://github.com/timothymarois/template-laravel-app) – example usage and boilerplate scaffolding is set up in this template.
-
----
 
 ## Contributing
 
