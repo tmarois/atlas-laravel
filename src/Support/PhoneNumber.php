@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Atlas\Laravel\Support;
 
 class PhoneNumber
@@ -8,7 +10,7 @@ class PhoneNumber
      * Formats a 10-digit US phone number to (XXX) XXX-XXXX format.
      *
      * @param  string|int|null  $phoneNumber  The raw phone number input
-     * @return string|null Formatted phone number or null if input is empty
+     * @return string|null Formatted phone number or null if input is empty or invalid
      */
     public static function format(null|int|string $phoneNumber): ?string
     {
@@ -18,10 +20,10 @@ class PhoneNumber
 
         $phoneNumber = (string) $phoneNumber;
 
-        $phoneNumber = self::normalize($phoneNumber) ?? $phoneNumber;
+        $phoneNumber = self::normalize($phoneNumber);
 
-        if (strlen($phoneNumber) !== 10) {
-            return $phoneNumber;
+        if ($phoneNumber === null) {
+            return null;
         }
 
         return '('.substr($phoneNumber, 0, 3).') '.

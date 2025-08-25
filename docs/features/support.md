@@ -4,13 +4,14 @@ Atlas Laravel ships with small utility classes under the `Atlas\Laravel\Support`
 
 ## PhoneNumber
 
-Format and normalize US phone numbers.
+Format and normalize US phone numbers. `PhoneNumber::format` returns `null` when the value can't be normalized.
 
 ```php
 use Atlas\Laravel\Support\PhoneNumber;
 
 PhoneNumber::format('1234567890'); // (123) 456-7890
 PhoneNumber::normalize('+1 (123) 456-7890'); // 1234567890
+PhoneNumber::format('123'); // null
 ```
 
 ## Caster

@@ -27,6 +27,11 @@ class PhoneNumberTest extends TestCase
         $this->assertNull(PhoneNumber::format(null));
     }
 
+    public function test_format_returns_null_when_normalization_fails(): void
+    {
+        $this->assertNull(PhoneNumber::format('123'));
+    }
+
     public function test_normalize_strips_country_code_and_symbols(): void
     {
         $this->assertSame('1234567890', PhoneNumber::normalize('+1 (123) 456-7890'));
