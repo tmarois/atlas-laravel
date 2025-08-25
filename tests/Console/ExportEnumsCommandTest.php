@@ -119,4 +119,18 @@ PHP);
         $this->assertStringContainsString("export { ActionStatus } from './Action/ActionStatus';", $indexContent);
         $this->assertStringContainsString("export { ActionStatus as ActionWorkerStatus } from './Action/Worker/ActionStatus';", $indexContent);
     }
+
+    public function test_clears_output_directory_before_export(): void
+    {
+        $this->artisan('atlas:export-enums')->assertExitCode(0);
+
+        $invoiceFile = $this->outputDir.'/Billing/InvoiceStatus.ts';
+        $this->assertFileExists($invoiceFile);
+
+        File::delete($this->enumDir.'/Billing/InvoiceStatus.php');
+
+        $this->artisan('atlas:export-enums')->assertExitCode(0);
+
+        $this->assertFileDoesNotExist($invoiceFile);
+    }
 }
