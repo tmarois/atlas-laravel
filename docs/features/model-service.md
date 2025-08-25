@@ -1,9 +1,10 @@
 # Model Service
 
-A base service class for Eloquent models that provides simple CRUD methods.
-Consumers set the model class and may extend or override the methods as needed.
-It also offers helpers for building filtered queries and returning paginated
-results that play nicely with our [Inertia data table options](./inertia-data-table-options.md).
+`ModelService` is a lightweight base class for Eloquent models. It wraps common
+CRUD operations and integrates with the same option array used by the Inertia
+data table helpers.
+
+## Usage
 
 ```php
 use Atlas\Laravel\Services\ModelService;
@@ -13,37 +14,35 @@ class UserService extends ModelService
 {
     protected string $model = User::class;
 }
-```
 
-```php
 $service = app(UserService::class);
+
 $user = $service->create(['name' => 'Terry']);
 $service->update($user, ['name' => 'Taylor']);
+
 $service->listPaginated(15, [
     'search' => 'tay',
     'sortField' => 'name',
     'sortOrder' => -1,
 ]);
+
 $service->delete($user);
 ```
 
-## Available Methods
+## API
 
-`ModelService` ships with a handful of helpers for common CRUD work:
+- `query()` – new query builder.
+- `buildQuery(array $options = [])` – extendable base query.
+- `list(array $columns = ['*'], array $options = [])` – all models.
+- `listPaginated(int $perPage = 15, array $options = [])` – paginated list.
+- `find(mixed $id)` – fetch by primary key.
+- `create(array $data)` – persist a model.
+- `update(Model $model, array $data)` – update a model.
+- `delete(Model $model)` – remove a model.
 
-- `query()` – get a new query builder for the model.
-- `buildQuery(array $options = [])` – base query method you can extend.
-- `list(array $columns = ['*'], array $options = [])` – retrieve all models.
-- `listPaginated(int $perPage = 15, array $options = [])` – retrieve a paginated list.
-- `find(mixed $id)` – locate a model by its primary key.
-- `create(array $data)` – persist a new model.
-- `update(Model $model, array $data)` – update an existing model.
-- `delete(Model $model)` – remove a model from storage.
+## Configuration
 
-## Configuring the Service
-
-Set the model class on the consumer side. For simple cases you can assign it
-directly on the service:
+Assign the model class via the `$model` property or in a constructor.
 
 ```php
 class UserService extends ModelService
@@ -52,10 +51,7 @@ class UserService extends ModelService
 }
 ```
 
-For more dynamic scenarios, assign the model in your own constructor or other
-initializer.
-
-### Contextual configuration
+### Contextual Setup
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -69,12 +65,13 @@ class TeamUserService extends ModelService
 
     public function buildQuery(array $options = []): Builder
     {
-        return parent::buildQuery($options)->where('team_id', $this->teamId);
+        return parent::buildQuery($options)
+            ->where('team_id', $this->teamId);
     }
 }
 ```
 
-### Setting defaults
+### Defaults
 
 ```php
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -90,19 +87,14 @@ class SortedUserService extends ModelService
 
     public function listPaginated(int $perPage = 15, array $options = []): LengthAwarePaginator
     {
-        $options = array_merge($this->defaults, $options);
-
-        return parent::listPaginated($perPage, $options);
+        return parent::listPaginated($perPage, array_merge($this->defaults, $options));
     }
 }
 ```
 
-## Customizing Queries
+## Custom Queries
 
-Override `buildQuery` in your service to push filter or search options into
-the query builder. These options line up with the array returned from the
-Inertia data table helpers, so the controller can simply forward them to the
-service.
+Override `buildQuery` to add filters or searches:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -114,13 +106,12 @@ class UserService extends ModelService
     public function buildQuery(array $options = []): Builder
     {
         return parent::buildQuery($options)
-            ->when($options['search'] ?? false, function ($q, $search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            })
-            ->when($options['filters']['user_id'] ?? null, function ($q, $userId) {
-                $q->where('id', $userId);
-            });
+            ->when($options['search'] ?? false, fn ($q, $search) => $q
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%"))
+            ->when($options['filters']['user_id'] ?? null, fn ($q, $userId) =>
+                $q->where('id', $userId));
     }
 }
 ```
+
