@@ -133,4 +133,30 @@ PHP);
 
         $this->assertFileDoesNotExist($invoiceFile);
     }
+
+    public function test_ignores_non_enum_files(): void
+    {
+        File::put($this->enumDir.'/note.txt', 'just a file');
+        File::put($this->enumDir.'/Helper.php', <<<'PHP'
+<?php
+
+namespace App\Enums;
+
+class Helper
+{
+}
+PHP);
+
+        $this->artisan('atlas:export-enums')->assertExitCode(0);
+
+        $this->assertFileDoesNotExist($this->outputDir.'/note.ts');
+        $this->assertFileDoesNotExist($this->outputDir.'/Helper.ts');
+
+        $indexFile = $this->outputDir.'/index.ts';
+        $this->assertFileExists($indexFile);
+
+        $indexContent = File::get($indexFile);
+        $this->assertStringNotContainsString('note', $indexContent);
+        $this->assertStringNotContainsString('Helper', $indexContent);
+    }
 }
