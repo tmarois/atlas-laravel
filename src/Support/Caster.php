@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Atlas\Laravel\Support;
 
 use Illuminate\Support\Carbon;
@@ -37,12 +39,31 @@ class Caster
             'int', 'integer' => (int) $value,
             'float', 'double' => (float) $value,
             'string' => (string) $value,
-            'bool', 'boolean' => (bool) $value,
+            'bool', 'boolean' => self::castToBoolean($value),
             'array' => (array) $value,
             'datetime' => self::castToDateTime($value),
             'json' => self::castToJson($value),
             default => $value,
         };
+    }
+
+    /**
+     * Cast a value to boolean.
+     *
+     * @param  mixed  $value  The value to cast.
+     * @return bool The cast boolean value.
+     */
+    private static function castToBoolean(mixed $value): bool
+    {
+        if (is_string($value)) {
+            return match (strtolower($value)) {
+                'true', '1', 'yes' => true,
+                'false', '0', 'no' => false,
+                default => (bool) $value,
+            };
+        }
+
+        return (bool) $value;
     }
 
     /**

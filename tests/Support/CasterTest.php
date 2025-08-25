@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Atlas\Laravel\Tests\Support;
 
 use Atlas\Laravel\Support\Caster;
@@ -52,5 +54,35 @@ class CasterTest extends TestCase
         $this->assertSame(['foo' => 'bar'], $result['metaObject']);
         $this->assertNull($result['invalidDate']);
         $this->assertNull($result['invalidJson']);
+    }
+
+    public function test_casts_boolean_strings(): void
+    {
+        $data = [
+            'true' => 'true',
+            'false' => 'false',
+            'one' => '1',
+            'zero' => '0',
+            'yes' => 'yes',
+            'no' => 'no',
+        ];
+
+        $casts = [
+            'true' => 'bool',
+            'false' => 'bool',
+            'one' => 'bool',
+            'zero' => 'bool',
+            'yes' => 'bool',
+            'no' => 'bool',
+        ];
+
+        $result = Caster::cast($data, $casts);
+
+        $this->assertTrue($result['true']);
+        $this->assertFalse($result['false']);
+        $this->assertTrue($result['one']);
+        $this->assertFalse($result['zero']);
+        $this->assertTrue($result['yes']);
+        $this->assertFalse($result['no']);
     }
 }
