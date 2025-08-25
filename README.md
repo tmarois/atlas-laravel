@@ -14,12 +14,14 @@ composer require tmarois/atlas-laravel
 
 ## Features
 
+Feature documentation lives in the [docs/features](docs/features) directory.
+
 Atlas Laravel handles the backend foundation and Inertia bridge. It includes tooling for:
 
-- ✅ [**DataTables**](docs/inertia-data-table-options.md) – build server-driven options for dynamic tables.
-- ✅ [**Enums**](docs/enum-exporter.md) – export PHP enums for type-safe usage in Vue.
-- ✅ [**Model Service**](docs/model-service.md) – base model service providing CRUD scaffolding.
-- ✅ [**Support Helpers**](docs/support.md) – lightweight utility classes.
+- ✅ [**DataTables**](docs/features/inertia-data-table-options.md) – build server-driven options for dynamic tables.
+- ✅ [**Enums**](docs/features/enum-exporter.md) – export PHP enums for type-safe usage in Vue.
+- ✅ [**Model Service**](docs/features/model-service.md) – base model service providing CRUD scaffolding.
+- ✅ [**Support Helpers**](docs/features/support.md) – lightweight utility classes.
 
 ## Atlas UI
 
