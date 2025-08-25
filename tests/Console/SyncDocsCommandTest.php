@@ -25,28 +25,24 @@ class SyncDocsCommandTest extends TestCase
         File::ensureDirectoryExists(base_path('docs/atlas'));
     }
 
-    public function test_syncs_selected_paths_and_agents(): void
+    public function test_syncs_selected_paths(): void
     {
         Http::fake([
             'https://api.github.com/repos/foo/bar/git/trees/HEAD*' => Http::response([
                 'tree' => [
-                    ['path' => 'AGENTS.md', 'type' => 'blob'],
                     ['path' => 'docs/components/button.md', 'type' => 'blob'],
                     ['path' => 'docs/components/ignore.md', 'type' => 'blob'],
                     ['path' => 'docs/README.md', 'type' => 'blob'],
                 ],
             ], 200),
-            'https://raw.githubusercontent.com/foo/bar/HEAD/AGENTS.md' => Http::response('agents', 200),
             'https://raw.githubusercontent.com/foo/bar/HEAD/docs/components/button.md' => Http::response('button', 200),
             'https://raw.githubusercontent.com/foo/bar/HEAD/docs/components/ignore.md' => Http::response('ignore', 200),
             'https://raw.githubusercontent.com/foo/bar/HEAD/docs/README.md' => Http::response('readme', 200),
             'https://api.github.com/repos/foo/baz/git/trees/HEAD*' => Http::response([
                 'tree' => [
-                    ['path' => 'AGENTS.md', 'type' => 'blob'],
                     ['path' => 'docs/file.md', 'type' => 'blob'],
                 ],
             ], 200),
-            'https://raw.githubusercontent.com/foo/baz/HEAD/AGENTS.md' => Http::response('agents-baz', 200),
             'https://raw.githubusercontent.com/foo/baz/HEAD/docs/file.md' => Http::response('file', 200),
         ]);
 
@@ -69,12 +65,10 @@ class SyncDocsCommandTest extends TestCase
 
         $this->artisan('atlas:sync-docs')->assertExitCode(0);
 
-        $this->assertFileExists(base_path('docs/ui/AGENTS.md'));
         $this->assertFileExists(base_path('docs/ui/components/button.md'));
         $this->assertFileDoesNotExist(base_path('docs/ui/components/ignore.md'));
         $this->assertFileExists(base_path('docs/ui/README.md'));
 
-        $this->assertFileExists(base_path('docs/atlas/baz/AGENTS.md'));
         $this->assertFileExists(base_path('docs/atlas/baz/docs/file.md'));
     }
 
@@ -83,11 +77,9 @@ class SyncDocsCommandTest extends TestCase
         Http::fake([
             'https://api.github.com/repos/foo/bar/git/trees/HEAD*' => Http::response([
                 'tree' => [
-                    ['path' => 'AGENTS.md', 'type' => 'blob'],
                     ['path' => 'docs/README.md', 'type' => 'blob'],
                 ],
             ], 200),
-            'https://raw.githubusercontent.com/foo/bar/HEAD/AGENTS.md' => Http::response('agents', 200),
             'https://raw.githubusercontent.com/foo/bar/HEAD/docs/README.md' => Http::response('readme', 200),
         ]);
 
@@ -113,11 +105,9 @@ class SyncDocsCommandTest extends TestCase
         Http::fake([
             'https://api.github.com/repos/foo/bar/git/trees/HEAD*' => Http::response([
                 'tree' => [
-                    ['path' => 'AGENTS.md', 'type' => 'blob'],
                     ['path' => 'docs/README.md', 'type' => 'blob'],
                 ],
             ], 200),
-            'https://raw.githubusercontent.com/foo/bar/HEAD/AGENTS.md' => Http::response('agents', 200),
             'https://raw.githubusercontent.com/foo/bar/HEAD/docs/README.md' => Http::response('readme', 200),
         ]);
 
@@ -144,11 +134,9 @@ class SyncDocsCommandTest extends TestCase
         Http::fake([
             'https://api.github.com/repos/foo/bar/git/trees/HEAD*' => Http::response([
                 'tree' => [
-                    ['path' => 'AGENTS.md', 'type' => 'blob'],
                     ['path' => 'docs/README.md', 'type' => 'blob'],
                 ],
             ], 200),
-            'https://raw.githubusercontent.com/foo/bar/HEAD/AGENTS.md' => Http::response('agents', 200),
             'https://raw.githubusercontent.com/foo/bar/HEAD/docs/README.md' => Http::response('readme', 200),
         ]);
 
@@ -177,11 +165,9 @@ class SyncDocsCommandTest extends TestCase
         Http::fake([
             'https://api.github.com/repos/foo/bar/git/trees/HEAD*' => Http::response([
                 'tree' => [
-                    ['path' => 'AGENTS.md', 'type' => 'blob'],
                     ['path' => 'docs/README.md', 'type' => 'blob'],
                 ],
             ], 200),
-            'https://raw.githubusercontent.com/foo/bar/HEAD/AGENTS.md' => Http::response('agents', 200),
             'https://raw.githubusercontent.com/foo/bar/HEAD/docs/README.md' => Http::response('readme', 200),
         ]);
 
