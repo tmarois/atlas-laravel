@@ -4,21 +4,21 @@ return [
     'delete' => true,
     'repos' => [
         [
-            'repo' => 'atlasphp/atlas-laravel',
+            'repo' => 'tmarois/laravel-standard',
             'paths' => [
                 [
                     'path' => 'docs',
-                    'output' => 'docs/atlas/atlas-laravel',
+                    'output' => 'docs/atlas/standards',
                 ],
             ],
-            'ignore' => ['README.md'],
+            'ignore' => [],
         ],
         [
-            'repo' => 'atlasphp/atlas-cli',
+            'repo' => 'tmarois/atlas-laravel',
             'paths' => [
                 [
-                    'path' => 'docs',
-                    'output' => 'docs/atlas/atlas-cli',
+                    'path' => 'docs/features',
+                    'output' => 'docs/atlas-laravel',
                 ],
             ],
             'ignore' => [],
