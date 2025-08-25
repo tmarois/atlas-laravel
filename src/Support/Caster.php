@@ -2,6 +2,8 @@
 
 namespace Atlas\Laravel\Support;
 
+use Illuminate\Support\Carbon;
+
 class Caster
 {
     /**
@@ -47,13 +49,13 @@ class Caster
      * Cast a value to DateTime.
      *
      * @param mixed $value The value to cast.
-     * @return \DateTime|null The cast DateTime or null on failure.
+     * @return Carbon|null The cast DateTime or null on failure.
      */
-    private static function castToDateTime(mixed $value): ?\DateTime
+    private static function castToDateTime(mixed $value): ?Carbon
     {
         try {
-            return new \DateTime($value);
-        } catch (\Exception) {
+            return Carbon::parse($value);
+        } catch (\Throwable) {
             return null;
         }
     }
