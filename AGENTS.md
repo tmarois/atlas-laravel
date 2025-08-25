@@ -12,7 +12,8 @@ coding conventions and expectations for contributors of this repository.
 - Format code with `./vendor/bin/pint` before committing.
 
 ## Documentation
-- New or changed features must update relevant Markdown files in `docs/` and `README.md`, including examples when possible.
-- New features belong under `/docs/features/`.
+- Group feature docs by their domain under `/docs/features/`.
+- For feature improvements, update the domain-specific doc only; update `README.md` only when introducing a feature not already listed.
+- New or changed features must update relevant Markdown files in `docs/`, including examples when possible.
 - Any new features or behavior changes must be reflected in the docs.
 - Documentation should start with a brief introduction, describe what the feature is and the problem it solves, then show how to use it via API descriptions and example usage.
