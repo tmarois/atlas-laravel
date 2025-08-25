@@ -8,7 +8,7 @@ return [
             'paths' => [
                 [
                     'path' => 'docs',
-                    'output' => 'docs/atlas/standards',
+                    'output' => 'docs/atlas-standards',
                 ],
             ],
             'ignore' => [],
