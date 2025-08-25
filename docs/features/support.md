@@ -27,4 +27,6 @@ $cast = Caster::cast($data, $casts);
 // ['count' => 1, 'active' => true]
 ```
 
+Boolean casts recognize the strings `"true"`, `"false"`, `"1"`, `"0"`, `"yes"`, and `"no"` before falling back to PHP's default boolean casting.
+
 These helpers are designed to be lightweight and framework agnostic, making them easy to reuse across projects.
