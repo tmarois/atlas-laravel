@@ -43,7 +43,6 @@ class SyncDocsCommand extends Command
             }
 
             $ignore = $repoConfig['ignore'] ?? [];
-            $includeAgents = $repoConfig['include_agents'] ?? true;
             $delete = $repoConfig['delete'] ?? $defaultDelete;
 
             $treeResponse = Http::withHeaders(['User-Agent' => 'atlas-docs-sync'])->get(
@@ -58,13 +57,6 @@ class SyncDocsCommand extends Command
             }
 
             $tree = $treeResponse->json('tree', []);
-
-            $agentsContent = null;
-            if ($includeAgents && collect($tree)->contains(fn ($item) => ($item['path'] ?? null) === 'AGENTS.md')) {
-                $agentsContent = Http::withHeaders(['User-Agent' => 'atlas-docs-sync'])
-                    ->get("https://raw.githubusercontent.com/{$repo}/HEAD/AGENTS.md")
-                    ->body();
-            }
 
             foreach ($paths as $pathConfig) {
                 $source = trim($pathConfig['path'] ?? '', '/');
@@ -120,10 +112,6 @@ class SyncDocsCommand extends Command
                         File::ensureDirectoryExists(dirname($destination));
                         File::put($destination, $contents);
                     }
-                }
-
-                if ($agentsContent !== null) {
-                    File::put($outputBase.'/AGENTS.md', $agentsContent);
                 }
             }
 
