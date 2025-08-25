@@ -2,10 +2,10 @@
 
 namespace Atlas\Laravel\Services;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
  * Base service for Eloquent models providing simple CRUD methods.
@@ -21,6 +21,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
  */
 /**
  * @template TModel of Model
+ *
  * @psalm-consistent-constructor
  */
 abstract class ModelService
@@ -72,6 +73,7 @@ abstract class ModelService
         return $this->buildQuery($options)
             ->when($options['sortField'] ?? false, function ($q) use ($options) {
                 $direction = ($options['sortOrder'] ?? 1) === 1 ? 'asc' : 'desc';
+
                 return $q->orderBy($options['sortField'], $direction);
             })
             ->paginate($perPage)
@@ -81,7 +83,6 @@ abstract class ModelService
     /**
      * Find a model by primary key.
      *
-     * @param mixed $id
      * @return TModel|null
      */
     public function find(mixed $id): ?Model
@@ -92,7 +93,6 @@ abstract class ModelService
     /**
      * Create a new model instance.
      *
-     * @param array $data
      * @return TModel
      */
     public function create(array $data): Model
@@ -103,8 +103,7 @@ abstract class ModelService
     /**
      * Update the given model instance.
      *
-     * @param TModel $model
-     * @param array $data
+     * @param  TModel  $model
      * @return TModel
      */
     public function update(Model $model, array $data): Model
@@ -117,8 +116,7 @@ abstract class ModelService
     /**
      * Delete the given model instance.
      *
-     * @param TModel $model
-     * @return bool
+     * @param  TModel  $model
      */
     public function delete(Model $model): bool
     {

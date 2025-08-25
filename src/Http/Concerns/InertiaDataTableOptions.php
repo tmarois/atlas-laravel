@@ -65,4 +65,3 @@ trait InertiaDataTableOptions
         session()->put("options.{$sessionKey}", $payload);
     }
 }
-

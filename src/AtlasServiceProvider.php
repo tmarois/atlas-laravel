@@ -31,4 +31,3 @@ class AtlasServiceProvider extends ServiceProvider
         }
     }
 }
-

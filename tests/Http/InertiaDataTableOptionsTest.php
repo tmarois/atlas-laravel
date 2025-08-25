@@ -22,7 +22,8 @@ class InertiaDataTableOptionsTest extends TestCase
             'filters' => ['count' => '5', 'active' => '1'],
         ]);
 
-        $controller = new class {
+        $controller = new class
+        {
             use InertiaDataTableOptions;
 
             protected array $indexDefaults = [
@@ -54,7 +55,8 @@ class InertiaDataTableOptionsTest extends TestCase
             'sortOrder' => '1',
         ]);
 
-        $controller = new class {
+        $controller = new class
+        {
             use InertiaDataTableOptions;
         };
 
@@ -69,4 +71,3 @@ class InertiaDataTableOptionsTest extends TestCase
         $this->assertSame($payload, session('options.users.index'));
     }
 }
-

@@ -9,8 +9,8 @@ class Caster
     /**
      * Cast the given data based on the provided cast definitions.
      *
-     * @param array $data  The data to cast.
-     * @param array $casts The cast definitions, where keys are field names and values are types.
+     * @param  array  $data  The data to cast.
+     * @param  array  $casts  The cast definitions, where keys are field names and values are types.
      * @return array The cast data.
      */
     public static function cast(array $data, array $casts): array
@@ -27,8 +27,8 @@ class Caster
     /**
      * Apply the given cast type to the value.
      *
-     * @param mixed  $value The value to cast.
-     * @param string $type  The cast type.
+     * @param  mixed  $value  The value to cast.
+     * @param  string  $type  The cast type.
      * @return mixed The cast value.
      */
     private static function applyCast(mixed $value, string $type): mixed
@@ -48,7 +48,7 @@ class Caster
     /**
      * Cast a value to DateTime.
      *
-     * @param mixed $value The value to cast.
+     * @param  mixed  $value  The value to cast.
      * @return Carbon|null The cast DateTime or null on failure.
      */
     private static function castToDateTime(mixed $value): ?Carbon
@@ -66,7 +66,7 @@ class Caster
      * Arrays or objects are converted to JSON and then decoded so that the
      * return value is always a PHP array (or scalar) rather than a JSON string.
      *
-     * @param mixed $value The value to cast.
+     * @param  mixed  $value  The value to cast.
      * @return mixed The decoded JSON value or null on failure.
      */
     private static function castToJson(mixed $value): mixed

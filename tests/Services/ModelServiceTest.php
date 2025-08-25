@@ -3,11 +3,11 @@
 namespace Atlas\Laravel\Tests\Services;
 
 use Atlas\Laravel\Services\ModelService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Orchestra\Testbench\TestCase;
 
 class ModelServiceTest extends TestCase
@@ -35,7 +35,8 @@ class ModelServiceTest extends TestCase
 
     public function test_performs_basic_crud_operations(): void
     {
-        $service = new class extends ModelService {
+        $service = new class extends ModelService
+        {
             protected string $model = Widget::class;
         };
 
@@ -57,7 +58,8 @@ class ModelServiceTest extends TestCase
 
     public function test_list_paginated_and_build_query(): void
     {
-        $service = new class extends ModelService {
+        $service = new class extends ModelService
+        {
             protected string $model = Widget::class;
 
             public function buildQuery(array $options = []): Builder
@@ -102,7 +104,8 @@ class ModelServiceTest extends TestCase
             $table->timestamps();
         });
 
-        $service = new class extends ModelService {
+        $service = new class extends ModelService
+        {
             protected string $model = StringWidget::class;
         };
 
