@@ -35,7 +35,7 @@ $service->delete($user);
 - `buildQuery(array $options = [])` – base query method you can extend.
 - `list(array $columns = ['*'], array $options = [])` – retrieve all models.
 - `listPaginated(int $perPage = 15, array $options = [])` – retrieve a paginated list.
-- `find(int|string $id)` – locate a model by its primary key.
+- `find(mixed $id)` – locate a model by its primary key.
 - `create(array $data)` – persist a new model.
 - `update(Model $model, array $data)` – update an existing model.
 - `delete(Model $model)` – remove a model from storage.
