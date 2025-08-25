@@ -81,9 +81,10 @@ abstract class ModelService
     /**
      * Find a model by primary key.
      *
+     * @param mixed $id
      * @return TModel|null
      */
-    public function find(int|string $id): ?Model
+    public function find(mixed $id): ?Model
     {
         return $this->query()->find($id);
     }

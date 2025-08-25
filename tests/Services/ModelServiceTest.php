@@ -93,6 +93,26 @@ class ModelServiceTest extends TestCase
         $this->assertSame(1, $filtered->total());
         $this->assertSame('Alpha', $filtered->first()->name);
     }
+
+    public function test_find_with_string_primary_key(): void
+    {
+        Schema::create('string_widgets', function (Blueprint $table): void {
+            $table->string('id')->primary();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        $service = new class extends ModelService {
+            protected string $model = StringWidget::class;
+        };
+
+        $widget = $service->create(['id' => 'w-1', 'name' => 'Alpha']);
+        $this->assertInstanceOf(StringWidget::class, $widget);
+
+        $found = $service->find('w-1');
+        $this->assertInstanceOf(StringWidget::class, $found);
+        $this->assertSame('Alpha', $found->name);
+    }
 }
 
 class Widget extends Model
@@ -100,4 +120,15 @@ class Widget extends Model
     protected $guarded = [];
 
     protected $table = 'widgets';
+}
+
+class StringWidget extends Model
+{
+    protected $guarded = [];
+
+    protected $table = 'string_widgets';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 }
