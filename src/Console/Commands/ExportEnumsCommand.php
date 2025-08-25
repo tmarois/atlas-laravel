@@ -27,6 +27,9 @@ class ExportEnumsCommand extends Command
         $format = $config['format'] ?? 'ts';
         $banner = $config['banner'] ?? '';
 
+        File::deleteDirectory($outputPath);
+        File::ensureDirectoryExists($outputPath);
+
         $exported = [];
 
         foreach ($enumPaths as $path) {
