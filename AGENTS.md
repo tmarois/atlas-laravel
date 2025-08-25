@@ -9,3 +9,4 @@ coding conventions and expectations for contributors of this repository.
 - Use PHP 8+ features with strict types and typed properties.
 - Follow PSR-12 formatting (enforced via Laravel Pint).
 - Write tests for new features and run `composer test` before committing.
+- Format code with `./vendor/bin/pint` before committing.
