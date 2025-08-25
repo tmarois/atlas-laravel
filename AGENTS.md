@@ -1,15 +1,13 @@
 # Agent Instructions
 
-Atlas is a collection of reusable Laravel packages 
+Atlas Laravel is a collection of reusable Laravel functionality  
 that consumers can drop into their own applications. This file summarizes the
-coding conventions and expectations for contributors.
+coding conventions and expectations for contributors of this repository.
 
 ## Coding guidelines
 
-- Follow the architecture and rules in the [docs](docs) directory.
 - Use PHP 8+ features with strict types and typed properties.
 - Follow PSR-12 formatting (enforced via Laravel Pint).
-- Keep controllers thin; business logic belongs in service classes.
 - Write tests for new features and run `composer test` before committing.
 
 ## Testing
