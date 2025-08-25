@@ -91,7 +91,8 @@ abstract class ModelService
     /**
      * Create a new model instance.
      *
-     * @return TModel
+     * @param array $data
+     * @return Model
      */
     public function create(array $data): Model
     {
@@ -101,8 +102,9 @@ abstract class ModelService
     /**
      * Update the given model instance.
      *
-     * @param TModel $model
-     * @return TModel
+     * @param Model $model
+     * @param array $data
+     * @return Model
      */
     public function update(Model $model, array $data): Model
     {
@@ -114,7 +116,8 @@ abstract class ModelService
     /**
      * Delete the given model instance.
      *
-     * @param TModel $model
+     * @param Model $model
+     * @return bool
      */
     public function delete(Model $model): bool
     {
