@@ -27,7 +27,7 @@ This document defines the structure and rules for building Vue 3 components usin
     │   └── components/
     │   └── composables/
     │   └── services/
-    │       └── enums/
+    │   └── enums/
     │   └── utils/
     ├── tests/
     │   └── components/
@@ -62,8 +62,11 @@ Organized into subfolders:
 
 - Optional layer for wrapping Inertia visits, API helpers, or uploaders.
 - Encapsulates external data interactions.
-- Generated enums live in `services/enums` and are created via `php artisan atlas:export-enums` (see
-  [Enum Exporter](../features/enum-exporter.md)).
+
+### Enums
+
+- Generated automatically to match Laravel enums and are created via `php artisan atlas:export-enums` (see
+[Enum Exporter](../features/enum-exporter.md)).
 
 ### Utils
 
