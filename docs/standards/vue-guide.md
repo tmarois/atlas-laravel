@@ -27,6 +27,7 @@ This document defines the structure and rules for building Vue 3 components usin
     │   └── components/
     │   └── composables/
     │   └── services/
+    │   └── enums/
     │   └── utils/
     ├── tests/
     │   └── components/
@@ -102,8 +103,3 @@ Organized into subfolders:
 ---
 
 This architecture is mandatory for all frontend development. Consistency is critical for maintainability, readability, and performance as the app scales.
-
-## UI Documentation
-
-- [Composables](ui/composables.md)
-- [Utils](ui/utils.md)
