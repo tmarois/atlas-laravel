@@ -16,7 +16,7 @@ class UserService extends ModelService
 ```
 
 ```php
-$service = new UserService();
+$service = app(UserService::class);
 $user = $service->create(['name' => 'Terry']);
 $service->update($user, ['name' => 'Taylor']);
 $service->listPaginated(15, [
