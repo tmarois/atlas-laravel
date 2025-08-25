@@ -43,7 +43,7 @@ PHP);
         File::put($this->enumDir.'/Billing/InvoiceStatus.php', <<<'PHP'
 <?php
 
-namespace App\Enums\Billing;
+    namespace App\Enums\Billing;
 
 enum InvoiceStatus: int
 {
@@ -158,5 +158,49 @@ PHP);
         $indexContent = File::get($indexFile);
         $this->assertStringNotContainsString('note', $indexContent);
         $this->assertStringNotContainsString('Helper', $indexContent);
+    }
+
+    public function test_exports_enum_with_declare_and_comments_before_namespace(): void
+    {
+        File::put($this->enumDir.'/Billing/DeclaredInvoiceStatus.php', <<<'PHP'
+<?php
+declare(strict_types=1);
+
+// Example comment
+    namespace App\Enums\Billing;
+
+enum DeclaredInvoiceStatus: int
+{
+    case Paid = 1;
+    case Unpaid = 0;
+}
+PHP);
+
+        $this->artisan('atlas:export-enums')->assertExitCode(0);
+
+        $file = $this->outputDir.'/Billing/DeclaredInvoiceStatus.ts';
+        $this->assertFileExists($file);
+        $this->assertStringContainsString('export enum DeclaredInvoiceStatus', File::get($file));
+    }
+
+    public function test_exports_enum_with_comment_before_namespace(): void
+    {
+        File::put($this->enumDir.'/CommentStatus.php', <<<'PHP'
+<?php
+// Leading comment
+
+namespace App\Enums;
+
+enum CommentStatus: string
+{
+    case Draft = 'draft';
+}
+PHP);
+
+        $this->artisan('atlas:export-enums')->assertExitCode(0);
+
+        $file = $this->outputDir.'/CommentStatus.ts';
+        $this->assertFileExists($file);
+        $this->assertStringContainsString('export enum CommentStatus', File::get($file));
     }
 }

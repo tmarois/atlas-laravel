@@ -147,11 +147,36 @@ class ExportEnumsCommand extends Command
 
     protected function getNamespace(string $path): ?string
     {
-        $content = File::get($path);
-        if (preg_match('/^namespace\s+([^;]+);/m', $content, $matches)) {
-            return trim($matches[1]);
+        $tokens = token_get_all(File::get($path));
+        $namespace = '';
+        $building = false;
+
+        foreach ($tokens as $token) {
+            if (is_array($token)) {
+                if ($token[0] === T_NAMESPACE) {
+                    $building = true;
+
+                    continue;
+                }
+
+                if ($building && in_array($token[0], [T_STRING, T_NAME_QUALIFIED, T_NS_SEPARATOR], true)) {
+                    $namespace .= $token[1];
+
+                    continue;
+                }
+
+                if ($building && $token[0] === T_WHITESPACE) {
+                    continue;
+                }
+
+                if ($building) {
+                    break;
+                }
+            } elseif ($building && ($token === ';' || $token === '{')) {
+                break;
+            }
         }
 
-        return null;
+        return $namespace !== '' ? $namespace : null;
     }
 }
