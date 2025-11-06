@@ -25,6 +25,8 @@ use LogicException;
  * @template TModel of Model
  *
  * @psalm-consistent-constructor
+ *
+ * @phpstan-consistent-constructor
  */
 abstract class ModelService
 {
@@ -48,6 +50,7 @@ abstract class ModelService
     /**
      * Build a base query for the model. Override to apply filters.
      *
+     * @param  array<string, mixed>  $options
      * @return Builder<TModel>
      */
     public function buildQuery(array $options = []): Builder
@@ -58,6 +61,8 @@ abstract class ModelService
     /**
      * Retrieve all models.
      *
+     * @param  array<int, string>  $columns
+     * @param  array<string, mixed>  $options
      * @return Collection<int, TModel>
      */
     public function list(array $columns = ['*'], array $options = []): Collection
@@ -68,6 +73,7 @@ abstract class ModelService
     /**
      * Retrieve a paginated list of models.
      *
+     * @param  array<string, mixed>  $options
      * @return LengthAwarePaginator<TModel>
      */
     public function listPaginated(int $perPage = 15, array $options = []): LengthAwarePaginator
@@ -95,6 +101,7 @@ abstract class ModelService
     /**
      * Create a new model instance.
      *
+     * @param  array<string, mixed>  $data
      * @return TModel
      */
     public function create(array $data): Model
@@ -105,6 +112,7 @@ abstract class ModelService
     /**
      * Update a model identified by its primary key.
      *
+     * @param  array<string, mixed>  $data
      * @return TModel
      */
     public function updateByKey(mixed $id, array $data): Model
@@ -122,6 +130,7 @@ abstract class ModelService
      * Update the given model instance.
      *
      * @param  TModel  $model
+     * @param  array<string, mixed>  $data
      * @return TModel
      */
     public function update(Model $model, array $data): Model
@@ -175,6 +184,7 @@ abstract class ModelService
      *  - withCount (array|string): relations to eager load counts for.
      *
      * @param  Builder<TModel>  $query
+     * @param  array<string, mixed>  $options
      * @return Builder<TModel>
      */
     protected function applyQueryOptions(Builder $query, array $options): Builder
