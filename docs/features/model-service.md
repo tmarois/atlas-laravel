@@ -37,6 +37,7 @@ $service->delete($user);
 - `listPaginated(int $perPage = 15, array $options = [])` – paginated list.
 - `find(mixed $id)` – fetch by primary key.
 - `create(array $data)` – persist a model.
+- `updateByKey(mixed $id, array $data)` – locate by key and update.
 - `update(Model $model, array $data)` – update a model.
 - `delete(Model $model)` – remove a model.
 
@@ -56,6 +57,19 @@ $service->list(['*'], [
     'with' => ['team', 'notes.author'],
     'withCount' => 'notes',
     'query' => fn (Builder $builder) => $builder->where('active', true),
+]);
+```
+
+### Updating Records
+
+Use `updateByKey()` when you only have an identifier and want the service to
+resolve the model for you. A `ModelNotFoundException` is thrown if the record
+does not exist.
+
+```php
+$service->updateByKey($userId, [
+    'name' => 'Taylor',
+    'active' => true,
 ]);
 ```
 

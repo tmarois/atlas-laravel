@@ -6,6 +6,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LogicException;
 
 /**
@@ -99,6 +100,22 @@ abstract class ModelService
     public function create(array $data): Model
     {
         return $this->query()->create($data);
+    }
+
+    /**
+     * Update a model identified by its primary key.
+     *
+     * @return TModel
+     */
+    public function updateByKey(mixed $id, array $data): Model
+    {
+        $model = $this->find($id);
+
+        if ($model === null) {
+            throw (new ModelNotFoundException)->setModel($this->resolveModelClass(), [$id]);
+        }
+
+        return $this->update($model, $data);
     }
 
     /**

@@ -6,6 +6,7 @@ use Atlas\Laravel\Services\ModelService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use LogicException;
@@ -211,6 +212,34 @@ class ModelServiceTest extends TestCase
 
         $this->assertSame(1, $page->total());
         $this->assertSame(2, $page->first()?->notes_count);
+    }
+
+    public function test_update_by_key_updates_existing_model(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = Widget::class;
+        };
+
+        $widget = $service->create(['name' => 'Alpha']);
+
+        $updated = $service->updateByKey($widget->id, ['name' => 'Beta']);
+
+        $this->assertSame('Beta', $updated->name);
+        $this->assertSame('Beta', $service->find($widget->id)?->name);
+    }
+
+    public function test_update_by_key_throws_when_model_missing(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = Widget::class;
+        };
+
+        $this->expectException(ModelNotFoundException::class);
+        $this->expectExceptionMessage(Widget::class);
+
+        $service->updateByKey(999, ['name' => 'Ghost']);
     }
 }
 
