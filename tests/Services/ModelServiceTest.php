@@ -22,6 +22,13 @@ class ModelServiceTest extends TestCase
             $table->string('name');
             $table->timestamps();
         });
+
+        Schema::create('widget_notes', function (Blueprint $table): void {
+            $table->id();
+            $table->foreignId('widget_id')->constrained('widgets')->cascadeOnDelete();
+            $table->string('content');
+            $table->timestamps();
+        });
     }
 
     protected function getEnvironmentSetUp($app): void
@@ -127,6 +134,84 @@ class ModelServiceTest extends TestCase
 
         $service->list();
     }
+
+    public function test_query_option_callback_allows_custom_constraints(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = Widget::class;
+        };
+
+        $service->create(['name' => 'Alpha']);
+        $service->create(['name' => 'Beta']);
+
+        $results = $service->list(['*'], [
+            'query' => function (Builder $builder): void {
+                $builder->where('name', 'Alpha');
+            },
+        ]);
+
+        $this->assertCount(1, $results);
+        $this->assertSame('Alpha', $results->first()?->name);
+    }
+
+    public function test_query_option_used_with_pagination(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = Widget::class;
+        };
+
+        $service->create(['name' => 'Alpha']);
+        $service->create(['name' => 'Beta']);
+
+        $page = $service->listPaginated(15, [
+            'query' => function (Builder $builder): void {
+                $builder->where('name', 'Beta');
+            },
+        ]);
+
+        $this->assertSame(1, $page->total());
+        $this->assertSame('Beta', $page->first()?->name);
+    }
+
+    public function test_with_option_eager_loads_relations(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = Widget::class;
+        };
+
+        $widget = $service->create(['name' => 'Alpha']);
+        WidgetNote::create(['widget_id' => $widget->id, 'content' => 'Note A']);
+        WidgetNote::create(['widget_id' => $widget->id, 'content' => 'Note B']);
+
+        $results = $service->list(['*'], [
+            'with' => 'notes',
+        ]);
+
+        $this->assertTrue($results->first()?->relationLoaded('notes'));
+        $this->assertCount(2, $results->first()?->notes);
+    }
+
+    public function test_with_count_option_eager_loads_counts_in_pagination(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = Widget::class;
+        };
+
+        $widget = $service->create(['name' => 'Alpha']);
+        WidgetNote::create(['widget_id' => $widget->id, 'content' => 'Note A']);
+        WidgetNote::create(['widget_id' => $widget->id, 'content' => 'Note B']);
+
+        $page = $service->listPaginated(15, [
+            'withCount' => 'notes',
+        ]);
+
+        $this->assertSame(1, $page->total());
+        $this->assertSame(2, $page->first()?->notes_count);
+    }
 }
 
 class Widget extends Model
@@ -134,6 +219,11 @@ class Widget extends Model
     protected $guarded = [];
 
     protected $table = 'widgets';
+
+    public function notes()
+    {
+        return $this->hasMany(WidgetNote::class);
+    }
 }
 
 class StringWidget extends Model
@@ -145,4 +235,16 @@ class StringWidget extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
+}
+
+class WidgetNote extends Model
+{
+    protected $guarded = [];
+
+    protected $table = 'widget_notes';
+
+    public function widget()
+    {
+        return $this->belongsTo(Widget::class);
+    }
 }

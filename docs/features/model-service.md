@@ -40,6 +40,25 @@ $service->delete($user);
 - `update(Model $model, array $data)` – update a model.
 - `delete(Model $model)` – remove a model.
 
+### Query Options
+
+`list()` and `listPaginated()` accept shared options for customizing the builder
+without overriding the service:
+
+- `query` &mdash; a callable receiving the `Builder` to apply ad-hoc constraints.
+- `with` &mdash; relations to eager load (string or array).
+- `withCount` &mdash; relations to eager load counts for (string or array).
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+
+$service->list(['*'], [
+    'with' => ['team', 'notes.author'],
+    'withCount' => 'notes',
+    'query' => fn (Builder $builder) => $builder->where('active', true),
+]);
+```
+
 ## Configuration
 
 Assign the model class via the `$model` property or in a constructor.
@@ -114,4 +133,3 @@ class UserService extends ModelService
     }
 }
 ```
-

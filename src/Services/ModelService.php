@@ -61,7 +61,7 @@ abstract class ModelService
      */
     public function list(array $columns = ['*'], array $options = []): Collection
     {
-        return $this->buildQuery($options)->get($columns);
+        return $this->applyQueryOptions($this->buildQuery($options), $options)->get($columns);
     }
 
     /**
@@ -71,14 +71,14 @@ abstract class ModelService
      */
     public function listPaginated(int $perPage = 15, array $options = []): LengthAwarePaginator
     {
-        return $this->buildQuery($options)
+        $query = $this->applyQueryOptions($this->buildQuery($options), $options)
             ->when($options['sortField'] ?? false, function ($q) use ($options) {
                 $direction = ($options['sortOrder'] ?? 1) === 1 ? 'asc' : 'desc';
 
                 return $q->orderBy($options['sortField'], $direction);
-            })
-            ->paginate($perPage)
-            ->withQueryString();
+            });
+
+        return $query->paginate($perPage)->withQueryString();
     }
 
     /**
@@ -147,5 +147,33 @@ abstract class ModelService
         }
 
         return $this->model;
+    }
+
+    /**
+     * Apply shared query options across retrieval methods.
+     *
+     * Supported options:
+     *  - query (callable): invoked with the builder instance for custom constraints.
+     *  - with (array|string): relations to eager load.
+     *  - withCount (array|string): relations to eager load counts for.
+     *
+     * @param  Builder<TModel>  $query
+     * @return Builder<TModel>
+     */
+    protected function applyQueryOptions(Builder $query, array $options): Builder
+    {
+        if (isset($options['query']) && is_callable($options['query'])) {
+            $options['query']($query);
+        }
+
+        if (isset($options['with'])) {
+            $query->with($options['with']);
+        }
+
+        if (isset($options['withCount'])) {
+            $query->withCount($options['withCount']);
+        }
+
+        return $query;
     }
 }
