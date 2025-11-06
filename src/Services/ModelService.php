@@ -136,9 +136,9 @@ abstract class ModelService
      *
      * @param  TModel  $model
      */
-    public function delete(Model $model): bool
+    public function delete(Model $model, bool $force = false): bool
     {
-        return (bool) $model->delete();
+        return (bool) ($force ? $model->forceDelete() : $model->delete());
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use LogicException;
@@ -28,6 +29,13 @@ class ModelServiceTest extends TestCase
             $table->id();
             $table->foreignId('widget_id')->constrained('widgets')->cascadeOnDelete();
             $table->string('content');
+            $table->timestamps();
+        });
+
+        Schema::create('soft_widgets', function (Blueprint $table): void {
+            $table->id();
+            $table->string('name');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -241,6 +249,37 @@ class ModelServiceTest extends TestCase
 
         $service->updateByKey(999, ['name' => 'Ghost']);
     }
+
+    public function test_delete_soft_deletes_when_force_not_requested(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = SoftWidget::class;
+        };
+
+        $widget = $service->create(['name' => 'Alpha']);
+
+        $result = $service->delete($widget);
+
+        $this->assertTrue($result);
+        $this->assertNull($service->find($widget->id));
+        $this->assertTrue(SoftWidget::withTrashed()->find($widget->id)?->trashed());
+    }
+
+    public function test_delete_force_removes_soft_deleted_record(): void
+    {
+        $service = new class extends ModelService
+        {
+            protected string $model = SoftWidget::class;
+        };
+
+        $widget = $service->create(['name' => 'Alpha']);
+
+        $result = $service->delete($widget, true);
+
+        $this->assertTrue($result);
+        $this->assertNull(SoftWidget::withTrashed()->find($widget->id));
+    }
 }
 
 class Widget extends Model
@@ -276,4 +315,13 @@ class WidgetNote extends Model
     {
         return $this->belongsTo(Widget::class);
     }
+}
+
+class SoftWidget extends Model
+{
+    use SoftDeletes;
+
+    protected $guarded = [];
+
+    protected $table = 'soft_widgets';
 }

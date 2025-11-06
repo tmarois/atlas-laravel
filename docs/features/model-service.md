@@ -39,7 +39,7 @@ $service->delete($user);
 - `create(array $data)` – persist a model.
 - `updateByKey(mixed $id, array $data)` – locate by key and update.
 - `update(Model $model, array $data)` – update a model.
-- `delete(Model $model)` – remove a model.
+- `delete(Model $model, bool $force = false)` – remove a model (permanent when `force` is `true`).
 
 ### Query Options
 
@@ -71,6 +71,19 @@ $service->updateByKey($userId, [
     'name' => 'Taylor',
     'active' => true,
 ]);
+```
+
+### Deleting Records
+
+`delete()` accepts an optional `force` flag so you can bypass soft deletes when
+needed. By default it will respect soft delete behavior.
+
+```php
+// Soft delete
+$service->delete($user);
+
+// Permanently remove
+$service->delete($user, true);
 ```
 
 ## Configuration
