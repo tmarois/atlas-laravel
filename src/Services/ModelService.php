@@ -6,6 +6,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use LogicException;
 
 /**
  * Base service for Eloquent models providing simple CRUD methods.
@@ -40,7 +41,7 @@ abstract class ModelService
      */
     public function query(): Builder
     {
-        return ($this->model)::query();
+        return $this->resolveModelClass()::query();
     }
 
     /**
@@ -121,5 +122,30 @@ abstract class ModelService
     public function delete(Model $model): bool
     {
         return (bool) $model->delete();
+    }
+
+    /**
+     * Resolve the configured model class, guarding against misconfiguration.
+     *
+     * @return class-string<TModel>
+     */
+    protected function resolveModelClass(): string
+    {
+        if (! isset($this->model) || $this->model === '') {
+            throw new LogicException(sprintf(
+                'No model class configured on %s. Set the protected $model property to an Eloquent model class.',
+                static::class,
+            ));
+        }
+
+        if (! is_a($this->model, Model::class, true)) {
+            throw new LogicException(sprintf(
+                'The configured $model on %s must be a class-string of %s.',
+                static::class,
+                Model::class,
+            ));
+        }
+
+        return $this->model;
     }
 }

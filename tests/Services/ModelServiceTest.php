@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use LogicException;
 use Orchestra\Testbench\TestCase;
 
 class ModelServiceTest extends TestCase
@@ -115,6 +116,16 @@ class ModelServiceTest extends TestCase
         $found = $service->find('w-1');
         $this->assertInstanceOf(StringWidget::class, $found);
         $this->assertSame('Alpha', $found->name);
+    }
+
+    public function test_exception_thrown_when_model_not_defined(): void
+    {
+        $service = new class extends ModelService {};
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('No model class configured');
+
+        $service->list();
     }
 }
 
