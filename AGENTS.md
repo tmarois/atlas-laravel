@@ -1,19 +1,56 @@
-# Agent Instructions
+# Agent Instructions — Atlas Laravel
 
-Atlas Laravel is a collection of reusable Laravel functionality  
-that consumers can drop into their own applications. This file summarizes the
-coding conventions and expectations for contributors of this repository.
+Purpose: Define contributor and automation rules for the **Atlas Laravel** package.  
 
-## Coding guidelines
+This guide governs coding, testing, documentation, and contribution workflow to maintain consistent quality across the repository.
 
-- Use PHP 8+ features with strict types and typed properties.
-- Follow PSR-12 formatting (enforced via Laravel Pint).
-- Write tests for new features and run `composer test` before committing.
-- Format code with `./vendor/bin/pint` before committing.
+---
 
-## Documentation
-- Group feature docs by their domain under `/docs/features/`.
-- For feature improvements, update the domain-specific doc only; update `README.md` only when introducing a feature not already listed.
-- New or changed features must update relevant Markdown files in `docs/`, including examples when possible.
-- Any new features or behavior changes must be reflected in the docs.
-- Documentation should start with a brief introduction, describe what the feature is and the problem it solves, then show how to use it via API descriptions and example usage.
+## Coding Standards
+
+- Use **PHP 8.4+** with strict types and typed properties.
+- Follow **PSR-12** formatting (enforced via **Laravel Pint**).
+- Run `./vendor/bin/pint` before committing to auto-format code.
+- Write clear, maintainable, and dependency-light code; avoid unnecessary abstractions.
+- All new features or changes must include automated tests; run `composer test` before committing.
+- Avoid framework hacks or direct vendor modifications.
+- Keep commits free of debug code, comments, and experimental logic.
+
+---
+
+## Documentation Standards
+
+- Place feature docs under `/docs/features/<domain>/`.
+- Update only the relevant feature doc when improving or extending functionality.
+- Documentation must include:
+    - A short summary of the feature and its purpose.
+    - Example usage or API reference.
+    - Notes on configuration, dependencies, or edge cases.
+- Any behavioral or API change **must** be documented before merge.
+
+---
+
+## Contributing Workflow
+
+All contributors must follow the [CONTRIBUTING.md](./CONTRIBUTING.md) workflow before committing:
+
+1. Review this **AGENTS.md** file in full — it defines all coding, testing, and documentation requirements.
+2. Format code using **Laravel Pint**:
+   ```bash
+   ./vendor/bin/pint
+   ```
+3. Run all tests with Composer:
+   ```bash
+   composer test
+   ```
+4. Update any affected documentation in `/docs/`.
+5. Commit clean, tested, and formatted code only — no debug or temporary code.
+
+---
+
+## Enforcement
+
+All contributors and automation must comply with these rules and the steps in `CONTRIBUTING.md`.  
+Pull requests or commits that fail coding, testing, or documentation requirements will be rejected.
+
+---

@@ -23,10 +23,6 @@ Atlas Laravel handles the backend foundation and Inertia bridge. It includes too
 - ✅ [**Model Service**](docs/features/model-service.md) – base model service providing CRUD scaffolding.
 - ✅ [**Support Helpers**](docs/features/support.md) – lightweight utility classes.
 
-## Atlas UI
-
-[Atlas UI](https://github.com/tmarois/atlas-ui) – reusable utilities and PrimeVue components that are complementary to this setup.
-
 ## Laravel Template
 
 [Laravel Template](https://github.com/timothymarois/template-laravel-app) – example usage and boilerplate scaffolding is set up in this template.
